@@ -1,0 +1,59 @@
+<!-- only  three things 
+ 1. inputValue variable bind with ngModel
+ 2. tableData array - push the inputValue into this
+                    - loop this in and show it in table
+3. click function to handel the add data into array
+ -->
+
+ <!-- if checked delete should not be visible / delete function / -->
+<div class="banner-cont">
+    <img src="/assets/Group 2.svg" alt="Banner Image" class="banner-image" >
+    <div class="monthName">
+       <span (click)="pevMonth()"><i class="fa-solid fa-caret-left"></i></span>
+        <h3>{{currentMonth}} {{currentYear}}</h3>
+      <span (click)="nextMonth()">  <i class="fa-solid fa-caret-right"></i></span>
+    </div>
+    <div class="wrapp" #calendarContainer>
+        
+        <ng-container *ngFor="let value of cells">
+            <div class="cal-Cont">
+                <div class="day" [ngClass]="{'today':value.isToday}">{{value.day}}
+                    <div class="date">{{value.date}}</div>
+                </div>
+            </div>
+               
+        </ng-container>
+    
+    </div>
+</div>
+
+<div>
+    <div class="input">
+        <input [(ngModel)]="inputValue" type = "text" placeholder="enter a task">
+        <button (click)="addData()">submit</button>
+    </div>
+    <div>
+        <table class="tableClass">
+            <tr *ngFor ="let value of tableData ; let i=index" >
+                <td><input class="checkValue" [(ngModel)]="value.completed" type="checkbox"></td>
+
+            <ng-container *ngIf="editMode && currentEditIndex === i">
+            <input  class="editValueClass2" [(ngModel)]="editValue" (keydown)="handleKey($event)" />
+          </ng-container>
+
+          <ng-container *ngIf="!editMode || currentEditIndex !== i">
+            <s class="editValueClass"*ngIf="value.completed">{{ value.task }}</s>
+            <span class="editValueClass" *ngIf="!value.completed">{{ value.task }}</span>
+          </ng-container>
+
+               <td><span (click)="startEditing(i)">
+                <i class="fa-solid fa-pen"></i>
+               </span></td>
+                <td><span (click)="deleteTask(i)" >
+                    <i class="fa-regular fa-square-minus"></i>
+                </span></td>
+            </tr>
+           
+        </table>
+    </div>
+</div>
